@@ -1,0 +1,45 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon",
+    "MySqlGenerate": "npx prisma generate --schema=./prisma/MySql.schema.prisma",
+    "MySqlPull": "npx prisma db pull --schema=./prisma/MySql.schema.prisma",
+    "MySqlPush": "npx prisma db push --schema=./prisma/MySql.schema.prisma",
+    "MySqlStudio": "npx prisma studio --schema=./prisma/MySql.schema.prisma",
+    "SqlServerGenerate": "npx prisma generate --schema=./prisma/SqlServer.schema.prisma",
+    "SqlServerPull": "npx prisma db pull --schema=./prisma/SqlServer.schema.prisma",
+    "SqlServerPush": "npx prisma db push --schema=./prisma/SqlServer.schema.prisma",
+    "SqlServerStudio": "npx prisma studio --schema=./prisma/SqlServer.schema.prisma",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/body-parser": "^1.19.5",
+    "@types/compression": "^1.7.5",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/fs-extra": "^11.0.4",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/lodash": "^4.17.0",
+    "nodemon": "^3.1.0",
+    "prisma": "^5.13.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3",
+    "zod": "^3.22.4"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.13.0",
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "lodash": "^4.17.21",
+    "uuid": "^9.0.1"
+  }
+}

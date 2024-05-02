@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlserver"
+  url      = env("DATABASE_URL")
+}
+
+model BENEFIT_PLANS {
+  BENEFIT_PLANS_ID Decimal    @id(map: "PK_BENEFIT_PLANS") @db.Decimal(18, 0)
+  PLAN_NAME        String?    @db.NChar(10)
+  DEDUCTABLE       Float?     @db.Money
+  PERCENTAGE_COPAY Decimal?   @db.Decimal(18, 0)
+  PERSONAL         PERSONAL[]
+}
+
+model employee {
+  idEmployee            Int
+  Employee_Number       BigInt    @unique(map: "employee$Employee Number_UNIQUE")
+  Last_Name             String    @db.VarChar(45)
+  First_Name            String    @db.VarChar(45)
+  SSN                   Decimal   @db.Decimal(10, 0)
+  Pay_Rate              String?   @db.VarChar(40)
+  Pay_Rates_idPay_Rates Int
+  Vacation_Days         Int?
+  Paid_To_Date          Decimal?  @db.Decimal(2, 0)
+  Paid_Last_Year        Decimal?  @db.Decimal(2, 0)
+  pay_rates             pay_rates @relation(fields: [Pay_Rates_idPay_Rates], references: [idPay_Rates], onUpdate: NoAction, map: "employee$fk_Employee_Pay Rates")
+
+  @@id([Employee_Number, Pay_Rates_idPay_Rates], map: "PK_employee_Employee Number")
+  @@index([Pay_Rates_idPay_Rates], map: "fk_Employee_Pay_Rates_idx")
+}
+
+model EMPLOYMENT {
+  EMPLOYMENT_ID                                Decimal                   @id(map: "PK_EMPLOYMENT") @db.Decimal(18, 0)
+  EMPLOYMENT_CODE                              String?                   @db.NVarChar(50)
+  EMPLOYMENT_STATUS                            String?                   @db.NChar(10)
+  HIRE_DATE_FOR_WORKING                        DateTime?                 @db.Date
+  WORKERS_COMP_CODE                            String?                   @db.NChar(10)
+  TERMINATION_DATE                             DateTime?                 @db.Date
+  REHIRE_DATE_FOR_WORKING                      DateTime?                 @db.Date
+  LAST_REVIEW_DATE                             DateTime?                 @db.Date
+  NUMBER_DAYS_REQUIREMENT_OF_WORKING_PER_MONTH Decimal?                  @db.Decimal(18, 0)
+  PERSONAL_ID                                  Decimal?                  @db.Decimal(18, 0)
+  PERSONAL                                     PERSONAL?                 @relation(fields: [PERSONAL_ID], references: [PERSONAL_ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_EMPLOYMENT_PERSONAL")
+  EMPLOYMENT_WORKING_TIME                      EMPLOYMENT_WORKING_TIME[]
+  JOB_HISTORY                                  JOB_HISTORY[]
+}
+
+model EMPLOYMENT_WORKING_TIME {
+  EMPLOYMENT_WORKING_TIME_ID                   Decimal     @id(map: "PK_EMPLOYMENT_WORKING_TIME") @db.Decimal(18, 0)
+  EMPLOYMENT_ID                                Decimal?    @db.Decimal(18, 0)
+  YEAR_WORKING                                 DateTime?   @db.Date
+  MONTH_WORKING                                Decimal?    @db.Decimal(2, 0)
+  NUMBER_DAYS_ACTUAL_OF_WORKING_PER_MONTH      Decimal?    @db.Decimal(2, 0)
+  TOTAL_NUMBER_VACATION_WORKING_DAYS_PER_MONTH Decimal?    @db.Decimal(2, 0)
+  EMPLOYMENT                                   EMPLOYMENT? @relation(fields: [EMPLOYMENT_ID], references: [EMPLOYMENT_ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_EMPLOYMENT_WORKING_TIME_EMPLOYMENT")
+}
+
+model JOB_HISTORY {
+  JOB_HISTORY_ID Decimal     @id(map: "PK_JOB_HISTORY") @db.Decimal(18, 0)
+  EMPLOYMENT_ID  Decimal?    @db.Decimal(18, 0)
+  DEPARTMENT     String?     @db.NVarChar(250)
+  DIVISION       String?     @db.NVarChar(250)
+  FROM_DATE      DateTime?   @db.Date
+  THRU_DATE      DateTime?   @db.Date
+  JOB_TITLE      String?     @db.NVarChar(250)
+  SUPERVISOR     String?     @db.NVarChar(250)
+  LOCATION       String?     @db.NVarChar(250)
+  TYPE_OF_WORK   Int?        @db.SmallInt
+  EMPLOYMENT     EMPLOYMENT? @relation(fields: [EMPLOYMENT_ID], references: [EMPLOYMENT_ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_JOB_HISTORY_EMPLOYMENT")
+}
+
+model PERSONAL {
+  PERSONAL_ID            Decimal        @id(map: "PK_PERSONAL") @db.Decimal(18, 0)
+  CURRENT_FIRST_NAME     String?        @db.NVarChar(50)
+  CURRENT_LAST_NAME      String?        @db.NVarChar(Max)
+  CURRENT_MIDDLE_NAME    String?        @db.NVarChar(50)
+  BIRTH_DATE             DateTime?      @db.Date
+  SOCIAL_SECURITY_NUMBER String?        @db.NVarChar(20)
+  DRIVERS_LICENSE        String?        @db.NVarChar(50)
+  CURRENT_ADDRESS_1      String?        @db.NVarChar(255)
+  CURRENT_ADDRESS_2      String?        @db.NVarChar(255)
+  CURRENT_CITY           String?        @db.NVarChar(100)
+  CURRENT_COUNTRY        String?        @db.NVarChar(100)
+  CURRENT_ZIP            Decimal?       @db.Decimal(18, 0)
+  CURRENT_GENDER         String?        @db.NVarChar(20)
+  CURRENT_PHONE_NUMBER   String?        @db.NVarChar(15)
+  CURRENT_PERSONAL_EMAIL String?        @db.NVarChar(50)
+  CURRENT_MARITAL_STATUS String?        @db.NVarChar(50)
+  ETHNICITY              String?        @db.NChar(10)
+  SHAREHOLDER_STATUS     Int?           @db.SmallInt
+  BENEFIT_PLAN_ID        Decimal?       @db.Decimal(18, 0)
+  EMPLOYMENT             EMPLOYMENT[]
+  BENEFIT_PLANS          BENEFIT_PLANS? @relation(fields: [BENEFIT_PLAN_ID], references: [BENEFIT_PLANS_ID], onDelete: NoAction, onUpdate: NoAction, map: "FK_PERSONAL_BENEFIT_PLANS")
+}
+
+model sysdiagrams {
+  name         String @db.NVarChar(128)
+  principal_id Int
+  diagram_id   Int    @id(map: "PK__sysdiagr__C2B05B610656D2E1") @default(autoincrement())
+  version      Int?
+  definition   Bytes?
+
+  @@unique([principal_id, name], map: "UK_principal_name")
+}
+
+model pay_rates {
+  idPay_Rates    Int        @id(map: "PK_pay_rates_idPay_Rates")
+  Pay_Rate_Name  String     @db.VarChar(40)
+  Value          Decimal    @db.Decimal(10, 0)
+  Tax_Percentage Decimal    @db.Decimal(10, 0)
+  Pay_Type       Int
+  Pay_Amount     Decimal    @db.Decimal(10, 0)
+  PT_Level_C     Decimal    @db.Decimal(10, 0)
+  employee       employee[]
+}
