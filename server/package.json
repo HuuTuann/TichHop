@@ -5,14 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon",
-    "MySqlGenerate": "npx prisma generate --schema=./prisma/MySql.schema.prisma",
-    "MySqlPull": "npx prisma db pull --schema=./prisma/MySql.schema.prisma",
-    "MySqlPush": "npx prisma db push --schema=./prisma/MySql.schema.prisma",
-    "MySqlStudio": "npx prisma studio --schema=./prisma/MySql.schema.prisma",
-    "SqlServerGenerate": "npx prisma generate --schema=./prisma/SqlServer.schema.prisma",
-    "SqlServerPull": "npx prisma db pull --schema=./prisma/SqlServer.schema.prisma",
-    "SqlServerPush": "npx prisma db push --schema=./prisma/SqlServer.schema.prisma",
-    "SqlServerStudio": "npx prisma studio --schema=./prisma/SqlServer.schema.prisma",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
