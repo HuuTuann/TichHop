@@ -1,10 +1,11 @@
-import Link from "next/link";
+import Chart from "@/components/bar-chart";
+import Personal from "@/components/personal";
 
 export default function Home() {
   return (
-    <div>
-      <h1>Hello world!</h1>
-      <Link href="/chart">Go to Chart</Link>
+    <div className="flex flex-col items-center">
+      <Personal />
+      <Chart />
     </div>
   );
 }
